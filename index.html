@@ -26,9 +26,12 @@
     let dx = 2; // Ball speed along X-axis
     let dy = 2; // Ball speed along Y-axis
     const radius = 15;
-    let ballColor = rgb(0,0,0);
 
-    function drawBall() {
+    function drawBall(time) {
+      // Calculate the red channel using sin of time
+      const red = Math.floor((Math.sin(time / 500) + 1) * 127.5); // Normalized to [0, 255]
+      const ballColor = `rgb(${red}, 0, 0)`;
+
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2, false);
       ctx.fillStyle = ballColor;
@@ -36,9 +39,9 @@
       ctx.closePath();
     }
 
-    function update() {
+    function update(time) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawBall();
+      drawBall(time);
 
       // Check for collisions with canvas edges
       if (x + dx > canvas.width - radius || x + dx < radius) {
@@ -54,7 +57,7 @@
       requestAnimationFrame(update);
     }
 
-    update();
+    requestAnimationFrame(update);
   </script>
 </body>
 </html>

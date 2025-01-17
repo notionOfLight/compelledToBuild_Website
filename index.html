@@ -3,19 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WebGL Falling Sand Game</title>
+  <title>Bouncing Ball</title>
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
     canvas {
       display: block;
+      margin: 0 auto;
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
 <body>
-  <canvas id="sandCanvas"></canvas>
-  <script src="fallingSand.js"></script>
+  <canvas id="bouncingBall" width="500" height="300"></canvas>
+
+  <script>
+    const canvas = document.getElementById("bouncingBall");
+    const ctx = canvas.getContext("2d");
+
+    // Ball properties
+    let x = canvas.width / 2;
+    let y = canvas.height / 2;
+    let dx = 2; // Ball speed along X-axis
+    let dy = 2; // Ball speed along Y-axis
+    const radius = 15;
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2, false);
+      ctx.fillStyle = "#007BFF";
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+
+      // Check for collisions with canvas edges
+      if (x + dx > canvas.width - radius || x + dx < radius) {
+        dx = -dx;
+      }
+      if (y + dy > canvas.height - radius || y + dy < radius) {
+        dy = -dy;
+      }
+
+      x += dx;
+      y += dy;
+
+      requestAnimationFrame(update);
+    }
+
+    update();
+  </script>
 </body>
 </html>
